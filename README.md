@@ -20,6 +20,7 @@ The script updates the **escalation chain** (`escalatingChainId`) and **escalati
 | Path | Purpose |
 |---|---|
 | `scripts/update_alert_rules_csv.py` | The script |
+| `scripts/README.md` | Detailed usage guide: dry run, real run, CSV format, troubleshooting |
 | `input/alert_rule_escalations.csv` | Target values for the 155 in-scope rules. **Not committed**, so put it here before running |
 | `input/alert_rules_out_of_scope.txt` | 7 rules the client excluded. Not in the CSV; do not touch |
 | `config/lm_config.template.json` | Config template. Copy to `lm_config.json` and fill in credentials |
@@ -35,6 +36,9 @@ The script updates the **escalation chain** (`escalatingChainId`) and **escalati
 
 ## 1. One-time setup
 
+Steps 1–6 are the quick version. For more detail (CSV format, how to read the output,
+troubleshooting), see [`scripts/README.md`](scripts/README.md).
+
 Run from the root of this folder:
 
 ```powershell
@@ -43,7 +47,7 @@ python -m venv .venv
 pip install -r requirements.txt
 
 Copy-Item config\lm_config.template.json config\lm_config.json
-notepad config\lm_config.json   # paste access_id and access_key
+notepad config\lm_config.json   # set portal to your-portal, paste access_id and access_key
 ```
 
 > `config\lm_config.json` contains secrets. Don't email it, commit it, or zip it.
