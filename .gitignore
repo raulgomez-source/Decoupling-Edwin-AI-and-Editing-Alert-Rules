@@ -1,0 +1,12 @@
+# Credentials: only the template is committed
+config/*.json
+!config/*.template.json
+
+# Run output
+logs/*
+!logs/.gitkeep
+
+# Python
+.venv/
+__pycache__/
+*.pyc

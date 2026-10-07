@@ -13,11 +13,11 @@ CSV expectations:
 
 Examples:
   python scripts/update_alert_rules_csv.py \\
-    --config config/lm_export_config.json \\
+    --config config/lm_config.json \\
     --csv input/alert_rule_escalations.csv
 
   python scripts/update_alert_rules_csv.py \\
-    --config config/lm_export_config.json \\
+    --config config/lm_config.json \\
     --csv input/alert_rule_escalations.csv --apply
 """
 

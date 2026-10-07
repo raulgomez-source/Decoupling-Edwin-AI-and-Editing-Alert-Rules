@@ -1,0 +1,7 @@
+EXAMPLE Out-of-scope rule 1
+EXAMPLE Out-of-scope rule 2
+EXAMPLE Out-of-scope rule 3
+EXAMPLE Out-of-scope rule 4
+EXAMPLE Out-of-scope rule 5
+EXAMPLE Out-of-scope rule 6
+EXAMPLE Out-of-scope rule 7

@@ -1,7 +1,15 @@
-# Alert Rule Escalation Update
+# Decoupling Edwin AI and Editing Alert Rules
 
-Updates the **escalation chain** (`escalatingChainId`) and **escalation interval**
-(`escalationInterval`) of LogicMonitor alert rules on the `your-portal` portal, using values from a CSV.
+The goal is to take Edwin AI out of the alerting path for the `your-portal` LogicMonitor portal.
+Alert rules are pointed straight at the right escalation chains, and then Edwin is turned off.
+
+| Phase | What happens | Where |
+|---|---|---|
+| 1. Update alert rules | Set the escalation chain and interval for the 155 in-scope rules from a CSV | Steps 1–6 below (scripted) |
+| 2. Turn off Edwin AI | Disable Edwin actions, rules and models, then stop event ingestion from the portal | Step 7 below and [`docs/edwin-decommission.md`](docs/edwin-decommission.md) (manual) |
+
+The script updates the **escalation chain** (`escalatingChainId`) and **escalation interval**
+(`escalationInterval`) of LogicMonitor alert rules using values from a CSV:
 
 - **Default mode is DRY RUN.** Nothing changes unless you add `--apply`.
 - Only those two fields are changed (HTTP PATCH). No rules are created or deleted.
@@ -11,13 +19,12 @@ Updates the **escalation chain** (`escalatingChainId`) and **escalation interval
 
 | Path | Purpose |
 |---|---|
-| `MESSAGE_TO_TEAMMATE.md` | Context and request for the person running the update |
 | `scripts/update_alert_rules_csv.py` | The script |
-| `input/alert_rule_escalations.csv` | Target values for the 155 in-scope rules |
+| `input/alert_rule_escalations.csv` | Target values for the 155 in-scope rules. **Not committed**, so put it here before running |
 | `input/alert_rules_out_of_scope.txt` | 7 rules the client excluded. Not in the CSV; do not touch |
 | `config/lm_config.template.json` | Config template. Copy to `lm_config.json` and fill in credentials |
-| `reference/alert_rule_refresh_summary.md` | Background: how the CSV was built and validated (paths there refer to the LM-Tools repo) |
-| `logs/` | Save your dry-run and apply output here |
+| `docs/edwin-decommission.md` | Final step: turn off Edwin AI and stop event ingestion |
+| `logs/` | Save your dry-run and apply output here (contents are git-ignored) |
 | `requirements.txt` | Python dependencies |
 
 ## Prerequisites
@@ -35,12 +42,15 @@ python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
 
-New-Item -ItemType Directory -Force logs | Out-Null
 Copy-Item config\lm_config.template.json config\lm_config.json
 notepad config\lm_config.json   # paste access_id and access_key
 ```
 
 > `config\lm_config.json` contains secrets. Don't email it, commit it, or zip it.
+> `.gitignore` already excludes it.
+
+Optional config keys: `page_size` (default 1000) and `endpoints` (`alert_rules`,
+`escalation_chains`). Only set them if the defaults don't work.
 
 ## 2. Connectivity check (read-only)
 
@@ -131,6 +141,21 @@ Each changed rule prints `UPDATED`. The Summary line `rules updated` should equa
 ## 6. Verify
 
 Run the dry run (step 3) again. Expected: `rows with changes: 0`, `errors: 0`.
+
+## 7. Final step: turn off Edwin AI
+
+Do this only after step 6 passes, a soak period agreed with the client is over, and the client
+has signed off. This step is manual. Follow [`docs/edwin-decommission.md`](docs/edwin-decommission.md);
+in short:
+
+1. **Record** the current Edwin configuration so it can be restored.
+2. **Turn off Edwin actions** (for example, ServiceNow ticket creation). This removes duplicate incidents.
+3. **Turn off Edwin rules** (correlation, enrichment, suppression, routing).
+4. **Turn off Edwin models** (correlation/clustering).
+5. **Stop event ingestion** from the `your-portal` portal into Edwin (recommended). Close any
+   open Edwin insights first, because once ingestion stops, the tickets Edwin opened won't auto-resolve.
+
+Disable, don't delete. To roll back, re-enable in reverse order.
 
 ## Exit codes
 
