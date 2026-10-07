@@ -175,12 +175,30 @@ The first row is a header. Columns are found by name, so their order doesn't mat
 | Interval | Yes | `escalationInterval`, `escalation_interval`, `interval` | Target escalation interval in minutes (integer) |
 | Chain name | No | `escalatingChain`, `escalating_chain`, `chain_name`, `chainName` | Only used to check the chain ID. If it doesn't match the live chain's name, the script warns |
 
-Example (illustrative values):
+A complete example is in [`input/alert_rule_escalations.example.csv`](../input/alert_rule_escalations.example.csv):
 
 ```csv
 id,name,escalatingChainId,escalationInterval,escalatingChain
-30,Sev 1 Circuit Down,17,15,Sev 1 SN Incident TH Circuit
+900001,EXAMPLE Sev 1 Circuit Down,17,15,Sev 1 SN Incident TH Circuit
+900002,EXAMPLE Sev 2 Interface Errors,17,30,Sev 1 SN Incident TH Circuit
+900003,EXAMPLE Sev 3 Disk Space Warning,2,0,NoEscalation
+,EXAMPLE Rule Matched By Name Only,2,0,
+900005,EXAMPLE Rule Without Chain Name Check,17,15,
 ```
+
+The rows show the different cases:
+
+- **Normal row:** the rule ID, the target chain ID and interval, and the chain name to check against.
+- **Blank `id`:** the rule is matched by `name` only.
+- **Blank `escalatingChain`:** the chain name check is skipped for that row.
+
+The rule IDs and names are placeholders that don't exist in the portal, so the file can't change
+anything by accident. If you run it, every row reports `ERROR: No alert rule found ...` and exits
+with code 1. That's expected. Chain IDs `17` (*Sev 1 SN Incident TH Circuit*) and `2`
+(*NoEscalation*) are real your-portal chains, and the interval values are only illustrations.
+
+To build the real file, copy the example to `input\alert_rule_escalations.csv` and replace the
+rows with real rule IDs, names and target values.
 
 If your headers have different names, map them with `--id-column`, `--name-column`,
 `--chain-id-column`, `--interval-column` or `--chain-name-column`.

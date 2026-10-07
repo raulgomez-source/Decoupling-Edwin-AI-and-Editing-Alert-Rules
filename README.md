@@ -22,6 +22,7 @@ The script updates the **escalation chain** (`escalatingChainId`) and **escalati
 | `scripts/update_alert_rules_csv.py` | The script |
 | `scripts/README.md` | Detailed usage guide: dry run, real run, CSV format, troubleshooting |
 | `input/alert_rule_escalations.csv` | Target values for the 155 in-scope rules. **Not committed**, so put it here before running |
+| `input/alert_rule_escalations.example.csv` | Format example with placeholder rules. Shows the columns and row types; it can't change real rules |
 | `input/alert_rules_out_of_scope.txt` | 7 rules the client excluded. Not in the CSV; do not touch |
 | `config/lm_config.template.json` | Config template. Copy to `lm_config.json` and fill in credentials |
 | `docs/edwin-decommission.md` | Final step: turn off Edwin AI and stop event ingestion |

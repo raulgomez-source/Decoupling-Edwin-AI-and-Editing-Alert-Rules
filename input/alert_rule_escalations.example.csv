@@ -1,0 +1,6 @@
+id,name,escalatingChainId,escalationInterval,escalatingChain
+900001,EXAMPLE Sev 1 Circuit Down,17,15,Sev 1 SN Incident TH Circuit
+900002,EXAMPLE Sev 2 Interface Errors,17,30,Sev 1 SN Incident TH Circuit
+900003,EXAMPLE Sev 3 Disk Space Warning,2,0,NoEscalation
+,EXAMPLE Rule Matched By Name Only,2,0,
+900005,EXAMPLE Rule Without Chain Name Check,17,15,
