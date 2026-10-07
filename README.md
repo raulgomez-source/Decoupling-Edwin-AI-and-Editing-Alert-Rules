@@ -23,7 +23,7 @@ The script updates the **escalation chain** (`escalatingChainId`) and **escalati
 | `scripts/README.md` | Detailed usage guide: dry run, real run, CSV format, troubleshooting |
 | `input/alert_rule_escalations.csv` | Target values for the 155 in-scope rules. **Not committed**, so put it here before running |
 | `input/alert_rule_escalations.example.csv` | Format example with placeholder rules. Shows the columns and row types; it can't change real rules |
-| `input/alert_rules_out_of_scope.txt` | 7 rules the client excluded. Not in the CSV; do not touch |
+| `input/alert_rules_out_of_scope.txt` | 7 rules the client excluded (placeholder names). Not in the CSV; do not touch |
 | `config/lm_config.template.json` | Config template. Copy to `lm_config.json` and fill in credentials |
 | `docs/edwin-decommission.md` | Final step: turn off Edwin AI and stop event ingestion |
 | `logs/` | Save your dry-run and apply output here (contents are git-ignored) |
@@ -194,10 +194,9 @@ Disable, don't delete. To roll back, re-enable in reverse order.
 
 ## Out of scope (client request)
 
-These 7 rules are **not** in the CSV and must be left alone (do not edit or delete):
-EXAMPLE Out-of-scope rule 1, EXAMPLE Out-of-scope rule 2, EXAMPLE Out-of-scope rule 3,
-EXAMPLE Out-of-scope rule 4, EXAMPLE Out-of-scope rule 5, EXAMPLE Out-of-scope rule 6,
-EXAMPLE Out-of-scope rule 7.
+The 7 rules listed in `input/alert_rules_out_of_scope.txt` are **not** in the CSV and must be
+left alone (do not edit or delete). The names in this repo are placeholders. Get the real list
+from the project owner, and don't commit it.
 
 ## Rollback
 
