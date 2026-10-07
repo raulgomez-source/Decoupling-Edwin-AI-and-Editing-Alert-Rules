@@ -1,9 +1,9 @@
-# Final step: turn off Edwin AI for your-portal
+# Final step: turn off Edwin AI
 
 Once the alert rules route straight to the right escalation chains (README steps 1–6), Edwin AI
 is no longer in the notification path. This last phase turns off what's left of it: the Edwin
 **actions**, **rules** and **models**, and then (probably) **event ingestion** from the
-`your-portal` portal into Edwin.
+LogicMonitor portal into Edwin.
 
 > This step is manual and the script in this repo does not do it.
 > **Disable** everything; don't delete anything until the client signs off. That way, rolling
@@ -41,7 +41,7 @@ exactly. Save everything under `logs/edwin_<yyyyMMdd>/`:
 Do this first. Actions are what create tickets and send notifications, so turning them off
 removes duplicate incidents right away and has the largest visible effect.
 
-- [ ] Disable every outbound Edwin action/integration for your-portal (for example, ServiceNow
+- [ ] Disable every outbound Edwin action/integration for the portal (for example, ServiceNow
       incident creation).
 - [ ] Make sure no new Edwin-created tickets show up in ServiceNow for at least one normal
       alert cycle.
@@ -66,11 +66,11 @@ With nothing downstream using the events, stop sending them to Edwin.
 - [ ] Before cutting ingestion, close or hand off any Edwin insights/incidents that are still
       open. Once ingestion stops, Edwin never receives the "alert cleared" events, so any tickets
       it opened will not auto-resolve.
-- [ ] In the `your-portal` LogicMonitor portal, disable the Edwin AI integration/connector or
+- [ ] In the LogicMonitor portal, disable the Edwin AI integration/connector or
       webhook that sends alerts to Edwin.
 - [ ] If an escalation chain or alert rule exists only to forward alerts to Edwin, disable it
       too. Don't touch the 7 out-of-scope rules in `input/alert_rules_out_of_scope.txt`.
-- [ ] Check in Edwin that no new events are coming in from your-portal.
+- [ ] Check in Edwin that no new events are coming in from the portal.
 - [ ] Run README step 3 (dry run) one more time to confirm the alert rules haven't changed:
       `rows with changes: 0`.
 
@@ -80,7 +80,7 @@ With nothing downstream using the events, stop sending them to Edwin.
       what was disabled.
 - [ ] Agree on how long to keep the disabled configuration before deleting it, or whether to
       keep it at all.
-- [ ] If Edwin licensing for your-portal is no longer needed, raise it with the account owner.
+- [ ] If Edwin licensing for the portal is no longer needed, raise it with the account owner.
 
 ## Rollback
 

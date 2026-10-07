@@ -32,7 +32,7 @@ Fill in the config file:
 
 ```json
 {
-  "portal": "your-portal",
+  "portal": "<portal subdomain>",
   "access_id": "<LM API access ID>",
   "access_key": "<LM API access key>",
   "api_version": "3"
@@ -41,7 +41,7 @@ Fill in the config file:
 
 | Key | Required | Notes |
 |---|---|---|
-| `portal` | Yes | The subdomain only (`your-portal`, not the full URL) |
+| `portal` | Yes | The subdomain only (`acme` for `acme.logicmonitor.com`, not the full URL) |
 | `access_id`, `access_key` | Yes | An LM API token for a user who can **view and manage alert rules** and **view escalation chains** |
 | `api_version` | No | Defaults to `3` |
 | `page_size` | No | Defaults to `1000` |
@@ -113,7 +113,7 @@ Summary
 Go ahead with the real run only if **all** of these are true:
 
 - [ ] `Mode: DRY RUN`
-- [ ] `rows seen` equals the number of data rows in the CSV (155 for your-portal)
+- [ ] `rows seen` equals the number of data rows in the CSV (155 in the current CSV)
 - [ ] `rows with changes` is roughly what you expected (~107 at the Sep 17 baseline; it's fine
       if it's lower because someone already fixed some rules)
 - [ ] `warnings: 0`
@@ -195,7 +195,7 @@ The rows show the different cases:
 The rule IDs and names are placeholders that don't exist in the portal, so the file can't change
 anything by accident. If you run it, every row reports `ERROR: No alert rule found ...` and exits
 with code 1. That's expected. Chain IDs `17` (*Sev 1 SN Incident TH Circuit*) and `2`
-(*NoEscalation*) are real your-portal chains, and the interval values are only illustrations.
+(*NoEscalation*) are real chains on the target portal, and the interval values are only illustrations.
 
 To build the real file, copy the example to `input\alert_rule_escalations.csv` and replace the
 rows with real rule IDs, names and target values.
@@ -239,7 +239,7 @@ The script loads all rules and chains once, at the start of each run.
 | Message | Cause | What to do |
 |---|---|---|
 | `HTTP 401` / `HTTP 403` | Wrong token, or the user is missing permissions | Check `access_id`/`access_key` and the user's role |
-| `Missing required config value: portal` | `portal` is blank in the config | Set it to `your-portal` |
+| `Missing required config value: portal` | `portal` is blank in the config | Set it to the portal subdomain |
 | `CSV must include escalatingChainId ...` | Header not recognized | Rename the header, or pass `--chain-id-column` |
 | `WARNING: CSV id=X maps to name=...` | The rule was renamed, or the CSV has the wrong ID | Confirm in the portal which rule is meant before applying |
 | `WARNING: escalatingChainId X is named ...` | The chain ID in the CSV doesn't match the chain name in the CSV | Fix the CSV. Don't apply until resolved |

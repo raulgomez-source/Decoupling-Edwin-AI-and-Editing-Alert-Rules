@@ -1,6 +1,6 @@
 # Decoupling Edwin AI and Editing Alert Rules
 
-The goal is to take Edwin AI out of the alerting path for the `your-portal` LogicMonitor portal.
+The goal is to take Edwin AI out of the alerting path for a LogicMonitor portal.
 Alert rules are pointed straight at the right escalation chains, and then Edwin is turned off.
 
 | Phase | What happens | Where |
@@ -32,7 +32,7 @@ The script updates the **escalation chain** (`escalatingChainId`) and **escalati
 ## Prerequisites
 
 - Windows PowerShell, Python 3.9+
-- A LogicMonitor API token (Access ID + Access Key) on `your-portal` for a user that can
+- A LogicMonitor API token (Access ID + Access Key) on the target portal for a user that can
   **view and manage alert rules** and **view escalation chains**
 
 ## 1. One-time setup
@@ -48,7 +48,7 @@ python -m venv .venv
 pip install -r requirements.txt
 
 Copy-Item config\lm_config.template.json config\lm_config.json
-notepad config\lm_config.json   # set portal to your-portal, paste access_id and access_key
+notepad config\lm_config.json   # set portal (subdomain only), paste access_id and access_key
 ```
 
 > `config\lm_config.json` contains secrets. Don't email it, commit it, or zip it.
@@ -157,7 +157,7 @@ in short:
 2. **Turn off Edwin actions** (for example, ServiceNow ticket creation). This removes duplicate incidents.
 3. **Turn off Edwin rules** (correlation, enrichment, suppression, routing).
 4. **Turn off Edwin models** (correlation/clustering).
-5. **Stop event ingestion** from the `your-portal` portal into Edwin (recommended). Close any
+5. **Stop event ingestion** from the LogicMonitor portal into Edwin (recommended). Close any
    open Edwin insights first, because once ingestion stops, the tickets Edwin opened won't auto-resolve.
 
 Disable, don't delete. To roll back, re-enable in reverse order.
